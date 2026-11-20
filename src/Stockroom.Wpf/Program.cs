@@ -1,5 +1,7 @@
+using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Markup;
 using Microsoft.Extensions.DependencyInjection;
 using Stockroom.Core.Persistence;
 using Stockroom.Core.Services;
@@ -37,6 +39,12 @@ internal static class Program
             // No UI thread context exists yet, so blocking here cannot deadlock.
             SampleData.SeedAsync(services.GetRequiredService<InventoryService>()).GetAwaiter().GetResult();
         }
+
+        // WPF formats bound values as en-US unless told otherwise. Match the user's culture so the
+        // currency shown in grids agrees with what the editor accepts.
+        FrameworkElement.LanguageProperty.OverrideMetadata(
+            typeof(FrameworkElement),
+            new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
         var app = new Application { ShutdownMode = ShutdownMode.OnMainWindowClose };
         app.Resources.MergedDictionaries.Add(Load<ResourceDictionary>("Resources/Theme.xaml"));
