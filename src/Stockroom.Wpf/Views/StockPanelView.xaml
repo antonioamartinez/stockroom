@@ -1,0 +1,54 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:Stockroom.Presentation.ViewModels;assembly=Stockroom.Presentation">
+
+  <DataTemplate DataType="{x:Type vm:StockAdjustmentViewModel}">
+    <Border Style="{StaticResource CardStyle}">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Stock" Style="{StaticResource SectionTitleStyle}" />
+
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,16" Orientation="Horizontal">
+          <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding QuantityOnHand, StringFormat={}{0:N0} on hand}" />
+          <TextBlock Margin="12,0,0,0"
+                     VerticalAlignment="Center"
+                     Foreground="{StaticResource WarningBrush}"
+                     Text="At or below reorder level"
+                     Visibility="{Binding IsLowStock, Converter={StaticResource BoolToVisibility}}" />
+        </StackPanel>
+
+        <Grid DockPanel.Dock="Top">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="110" />
+            <ColumnDefinition Width="12" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="12" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <TextBlock Text="Quantity" Style="{StaticResource FieldLabelStyle}" />
+            <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" />
+          </StackPanel>
+          <StackPanel Grid.Column="2">
+            <TextBlock Text="Reason" Style="{StaticResource FieldLabelStyle}" />
+            <TextBox Text="{Binding Reason, UpdateSourceTrigger=PropertyChanged}" />
+          </StackPanel>
+          <StackPanel Grid.Column="4" Margin="0,20,0,0" VerticalAlignment="Top" Orientation="Horizontal">
+            <Button Content="Receive" Command="{Binding ReceiveCommand}" />
+            <Button Content="Issue" Command="{Binding IssueCommand}" Margin="0" />
+          </StackPanel>
+        </Grid>
+
+        <TextBlock DockPanel.Dock="Top" Margin="0,8,0,8" Text="History" Style="{StaticResource SectionTitleStyle}" />
+
+        <DataGrid ItemsSource="{Binding Movements}">
+          <DataGrid.Columns>
+            <DataGridTextColumn Width="150" Header="When" Binding="{Binding Timestamp.LocalDateTime, Mode=OneWay, StringFormat={}{0:g}}" />
+            <DataGridTextColumn Width="80" Header="Change" Binding="{Binding Quantity, Mode=OneWay, StringFormat={}{0:+#;-#;0}}" ElementStyle="{StaticResource NumberCellStyle}" />
+            <DataGridTextColumn Width="*" Header="Reason" Binding="{Binding Reason, Mode=OneWay}" />
+          </DataGrid.Columns>
+        </DataGrid>
+      </DockPanel>
+    </Border>
+  </DataTemplate>
+
+</ResourceDictionary>

@@ -1,0 +1,13 @@
+<!--
+  Maps each view model type to its view. Each view is a ResourceDictionary holding one DataTemplate
+  keyed by DataType, so views need no x:Class and no code-behind.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="DashboardView.xaml" />
+    <ResourceDictionary Source="ItemListView.xaml" />
+    <ResourceDictionary Source="ItemEditorView.xaml" />
+    <ResourceDictionary Source="StockPanelView.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

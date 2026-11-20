@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The WPF shell. It holds XAML, the composition root and the WPF implementation of IDialogService.
+    There is no App.xaml and no .xaml.cs file anywhere: Program.cs starts the app, and every view is a
+    DataTemplate chosen by view model type.
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- Lets the project restore and compile on Linux or macOS (for example in CI). It still only runs on Windows. -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.15" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.161" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Stockroom.Core\Stockroom.Core.csproj" />
+    <ProjectReference Include="..\Stockroom.Presentation\Stockroom.Presentation.csproj" />
+  </ItemGroup>
+
+</Project>

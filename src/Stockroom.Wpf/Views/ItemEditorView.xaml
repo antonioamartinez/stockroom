@@ -1,0 +1,65 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:Stockroom.Presentation.ViewModels;assembly=Stockroom.Presentation">
+
+  <!--
+    Every TextBox updates on each keystroke so validation and the Save button react immediately.
+    Numeric fields bind to string properties: the view model parses and validates them.
+  -->
+  <DataTemplate DataType="{x:Type vm:ItemEditorViewModel}">
+    <DockPanel>
+      <TextBlock DockPanel.Dock="Top" Text="{Binding Title}" Style="{StaticResource PageTitleStyle}" />
+
+      <StackPanel DockPanel.Dock="Bottom" Margin="0,16,0,0" Orientation="Horizontal">
+        <Button Content="Save" Command="{Binding SaveCommand}" IsDefault="True" Style="{StaticResource PrimaryButtonStyle}" />
+        <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
+      </StackPanel>
+
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="360" />
+          <ColumnDefinition Width="24" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border VerticalAlignment="Top" Style="{StaticResource CardStyle}">
+          <StackPanel>
+            <TextBlock Text="SKU" Style="{StaticResource FieldLabelStyle}" />
+            <TextBox Text="{Binding Sku, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Text="Name" Style="{StaticResource FieldLabelStyle}" />
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Text="Category (optional)" Style="{StaticResource FieldLabelStyle}" />
+            <TextBox Text="{Binding Category, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <StackPanel>
+                <TextBlock Text="Reorder at" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Text="{Binding ReorderLevel, UpdateSourceTrigger=PropertyChanged}" />
+              </StackPanel>
+              <StackPanel Grid.Column="2">
+                <TextBlock Text="Unit cost" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Text="{Binding UnitCost, UpdateSourceTrigger=PropertyChanged}" />
+              </StackPanel>
+            </Grid>
+
+            <StackPanel Visibility="{Binding IsNew, Converter={StaticResource BoolToVisibility}}">
+              <TextBlock Text="Starting quantity" Style="{StaticResource FieldLabelStyle}" />
+              <TextBox Text="{Binding OpeningQuantity, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <!-- Null for a new item, so nothing shows until the item exists. -->
+        <ContentControl Grid.Column="2" Content="{Binding Stock}" Focusable="False" />
+      </Grid>
+    </DockPanel>
+  </DataTemplate>
+
+</ResourceDictionary>
